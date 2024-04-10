@@ -42,10 +42,13 @@ jobs:
         script: |
           cd /app
           sudo apt-get update
-          sudo apt-get install -y python3.9 python3-pip python3.9-venv
-          python3 -m venv myenv
+          sudo apt-get install -y python3.10 python3-pip python3.10-venv
+          python3.10 -m venv myenv
           source myenv/bin/activate
           pip install --upgrade pip
           pip install -r requirements.txt
           # Running the Flask application
-          nohup flask run --host=0.0.0.0 &
+          # Ensure that Flask is installed in the current python environment
+          python -c 'import flask; print(flask.__version__)'
+          # Running the Flask application
+          nohup gunicorn -w 4 -b 0.0.0.0:5000 apiv2:app &
