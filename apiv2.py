@@ -3,9 +3,13 @@ from PIL import Image
 import numpy as np
 import tensorflow as tf
 import io
+import os
 
 # Initialize Flask app
 app = Flask(__name__)
+
+# Force TensorFlow to use only the CPU
+os.environ['CUDA_VISIBLE_DEVICES'] = ''
 
 # Load the model at startup
 model = tf.saved_model.load('inference_graph_v2/saved_model')
