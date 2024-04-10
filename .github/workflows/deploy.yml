@@ -31,6 +31,7 @@ jobs:
         key: ${{ secrets.DROPLET_SSH_KEY }}
         source: "."
         target: "/app"
+    debug: true
 
     - name: SSH into DigitalOcean and run application
       uses: appleboy/ssh-action@master
