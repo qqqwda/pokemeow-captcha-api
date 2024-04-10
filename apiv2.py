@@ -3,7 +3,6 @@ from PIL import Image
 import numpy as np
 import tensorflow as tf
 import io
-import os
 
 # Initialize Flask app
 app = Flask(__name__)
@@ -11,14 +10,9 @@ app = Flask(__name__)
 # Force TensorFlow to use only the CPU
 os.environ['CUDA_VISIBLE_DEVICES'] = ''
 
-# Load the model at startup
-model = None  # global variable to hold the model
-# model = tf.saved_model.load('inference_graph_v2//saved_model//')
 
-def load_model(model_path):
-    print("[load_model] Loading model...")
-    model = tf.saved_model.load(model_path)
-    return model 
+# Load the model at startup
+model = tf.saved_model.load('inference_graph_v2/saved_model')
 
 def load_label_map():
     return {
@@ -43,13 +37,6 @@ def load_label_map():
         19: 's8',
         20: 's9'
     }
-    
-@app.before_request
-def load_model_to_app():
-    global model
-    if model is None:
-        print("[@app.before_request] Loading model...")
-        model = load_model('inference_graph_v2//saved_model//')
 
 # Load your label map
 category_index = load_label_map()
@@ -100,12 +87,6 @@ def run_inference_for_single_image(model, image):
     output_dict['detection_classes'] = output_dict['detection_classes'].astype(np.int64)
 
     return output_dict
-
-
-def load_model(model_path):
-    print("[load_model] Loading model...")
-    model = tf.saved_model.load(model_path)
-    return model
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')
