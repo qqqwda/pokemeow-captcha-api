@@ -1,1 +1,1 @@
-# pokemeow-captcha-api
+# pokemeow-captcha-solver-api
