@@ -51,4 +51,4 @@ jobs:
           # Ensure that Flask is installed in the current python environment
           python -c 'import flask; print(flask.__version__)'
           # Running the Flask application
-          nohup gunicorn -w 4 --threads 2 -b 0.0.0.0:5000 apiv2:app --log-file=- &
+          nohup gunicorn -w 2 --threads 2 -b 0.0.0.0:5000 apiv2:app --timeout 120 --log-file=- &
