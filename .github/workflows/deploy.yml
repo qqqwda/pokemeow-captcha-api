@@ -75,7 +75,7 @@ jobs:
       with:
         host: ${{ secrets.TEST_DROPLET_IP }}
         username: ${{ secrets.TEST_DROPLET_USER }}
-        key: ${{ secrets.TEST_DROPLET_SSH_KEY }}
+        key: ${{ secrets.DROPLET_SSH_KEY }}
         source: "."
         target: "/app-test"
         debug: true
@@ -85,7 +85,7 @@ jobs:
       with:
         host: ${{ secrets.TEST_DROPLET_IP }}
         username: ${{ secrets.TEST_DROPLET_USER }}
-        key: ${{ secrets.TEST_DROPLET_SSH_KEY }}
+        key: ${{ secrets.DROPLET_SSH_KEY }}
         script: |
           cd /app-test
           sudo apt-get update
