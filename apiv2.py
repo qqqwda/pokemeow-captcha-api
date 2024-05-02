@@ -59,7 +59,6 @@ def hello_world():
     return "<p>Hello, World!</p>"
 
 @app.route('/predict', methods=['POST'])
-@require_rapidapi_proxy_secret
 def predict():
     if 'file' not in request.files:
         return jsonify({'error': 'no file'}), 400
