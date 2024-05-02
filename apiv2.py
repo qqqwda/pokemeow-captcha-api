@@ -4,6 +4,7 @@ import numpy as np
 import tensorflow as tf
 import io
 import os
+from flask import abort
 # Initialize Flask app
 app = Flask(__name__)
 
@@ -41,17 +42,34 @@ def load_label_map():
 # Load your label map
 category_index = load_label_map()
 
+# Example secret key, replace with your actual RapidAPI Proxy Secret
+RAPIDAPI_PROXY_SECRET = os.getenv('RAPIDAPI_PROXY_SECRET')
+
+def require_rapidapi_proxy_secret(f):
+    def wrapper(*args, **kwargs):
+        proxy_secret = request.headers.get('X-RapidAPI-Proxy-Secret')
+        if proxy_secret != RAPIDAPI_PROXY_SECRET:
+            abort(403)  # Forbidden access if the secret doesn't match
+        return f(*args, **kwargs)
+    wrapper.__name__ = f.__name__
+    return wrapper
+
 @app.route("/")
 def hello_world():
     return "<p>Hello, World!</p>"
 
 @app.route('/predict', methods=['POST'])
+@require_rapidapi_proxy_secret
 def predict():
     if 'file' not in request.files:
         return jsonify({'error': 'no file'}), 400
     
     if len(request.files) > 1:
         return jsonify({'error': 'only one file can be processed at a time'}), 400
+
+        #Validate the image size and format is more than 100kb
+    if request.content_length > 100000:
+        return jsonify({'error': 'file size too large'}), 400
 
 
     file = request.files['file']

@@ -94,6 +94,7 @@ jobs:
           source myenv/bin/activate
           pip install --upgrade pip
           pip install -r requirements.txt
+          export RAPIDAPI_PROXY_SECRET=${{ secrets.RAPIDAPI_PROXY_SECRET }}
           # Running the Flask application
           python -c 'import flask; print(flask.__version__)'
           nohup gunicorn -w 2 --threads 2 -b 0.0.0.0:5000 apiv2:app --timeout 120 --log-file=- &
