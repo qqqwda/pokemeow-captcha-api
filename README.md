@@ -19,3 +19,11 @@ or
 ```plaintext
 python apiv2.py
    ```
+
+Check if you can access to http://localhost:5000/ it should say 'Hello, World!'
+
+Test the /predict endpoint 
+
+```plaintext
+ http://localhost:5000/predict
+   ```
